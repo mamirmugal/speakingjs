@@ -115,9 +115,9 @@
             break;
             
             console.log('console.log(isNaN("berry"));\n'+
-            'console.log(isNaN(NaN));\n'+
-            'console.log(isNaN(undefined));\n'+
-            'console.log(isNaN(42));\n');
+                'console.log(isNaN(NaN));\n'+
+                'console.log(isNaN(undefined));\n'+
+                'console.log(isNaN(42));\n');
             
             console.log(isNaN("berry"));
             console.log(isNaN(NaN));
@@ -126,10 +126,76 @@
             
         case '9':
             
+            console.log('var bob = new Object();\n'+
+                'bob.name = "Bob Smith";\n'+
+                'bob.age = 30;\n'+
+                '// Here is susan1, in literal notation\n'+
+                'var susan1 = {\n'+
+                'name: "Susan Jordan",\n'+
+                'age: 24\n'+
+                '};\n');
             
+            var bob = new Object();
+            bob.name = "Bob Smith";
+            bob.age = 30;
+            // Here is susan1, in literal notation
+            var susan1 = {
+                name: "Susan Jordan",
+                age: 24
+            };
             
             break;
+
+        case '10':
+           
+            console.log('var bob = new Object();\n'+
+                'bob.age = 30;\n'+
+                '// this time we have added a method, setAge\n'+
+                'bob.setAge = function (newAge){\n'+
+                '  bob.age = newAge;\n'+
+                '};\n'+
+                '\n'+
+                'bob.getYearOfBirth = function () {\n'+
+                '  return 2012 - bob.age;\n'+
+                '};\n'+
+                'console.log(bob.getYearOfBirth());\n');
+           
+            var bob = new Object();
+            bob.age = 30;
+            // this time we have added a method, setAge
+            bob.setAge = function (newAge){
+                bob.age = newAge;
+            };
+
+            bob.getYearOfBirth = function () {
+                return 2012 - bob.age;
+            };
+            console.log(bob.getYearOfBirth()); F
+           
+            break;
+
+        case '11':
             
+            console.log('function Person(name,age) {\n'+
+                'this.name = name;\n'+
+                'this.age = age;\n'+
+                '}\'n'+
+            '\n'+
+            '// Lets make bob and susan again, using our constructor\n'+
+            'var bob = new Person("Bob Smith", 30);\n'+
+            'var susan = new Person("Susan Jordan", 25);\n');
+            
+        function Person(name,age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        // Let's make bob and susan again, using our constructor
+        var bob = new Person("Bob Smith", 30);
+        var susan = new Person("Susan Jordan", 25);
+            
+        break;
+
     }
   
 
