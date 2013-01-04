@@ -1,6 +1,7 @@
 <script type="text/javascript" src="function.js"></script>
 <script type="text/javascript">
 
+    // new changes
 
     switch(getUri()){
     
