@@ -1,7 +1,12 @@
 <script type="text/javascript" src="function.js"></script>
 <script type="text/javascript">
 
-// www folder change
+    //<<<<<<< HEAD
+    // www folder change
+    //=======
+    // new changes
+
+    // >>>>>>> 9bdab274a28b18b27706d08c8b38daf03e849c3f
     switch(getUri()){
     
         case '1':
@@ -112,7 +117,7 @@
             }
             console.log("Tails! Done flipping.");
             
-            break;
+            
             
             console.log('console.log(isNaN("berry"));\n'+
                 'console.log(isNaN(NaN));\n'+
@@ -124,6 +129,8 @@
             console.log(isNaN(undefined));
             console.log(isNaN(42));
             
+            break;
+
         case '9':
             
             console.log('var bob = new Object();\n'+
@@ -180,22 +187,239 @@
                 'this.name = name;\n'+
                 'this.age = age;\n'+
                 '}\'n'+
-            '\n'+
-            '// Lets make bob and susan again, using our constructor\n'+
-            'var bob = new Person("Bob Smith", 30);\n'+
-            'var susan = new Person("Susan Jordan", 25);\n');
+                '\n'+
+                '// Lets make bob and susan again, using our constructor\n'+
+                'var bob = new Person("Bob Smith", 30);\n'+
+                'var susan = new Person("Susan Jordan", 25);\n');
             
-        function Person(name,age) {
-            this.name = name;
-            this.age = age;
-        }
+            function Person(name,age) {
+                this.name = name;
+                this.age = age;
+            }
 
-        // Let's make bob and susan again, using our constructor
-        var bob = new Person("Bob Smith", 30);
-        var susan = new Person("Susan Jordan", 25);
+            // Let's make bob and susan again, using our constructor
+            var bob = new Person("Bob Smith", 30);
+            var susan = new Person("Susan Jordan", 25);
             
-        break;
+            break;
 
+
+        case '12':
+            
+            console.log('var james = {\n'+
+                'job: "programmer",\n'+
+                'married: false\n'+
+                '};\n'+
+                '\n'+
+                '// set to the first property name of "james"\n'+
+                'var aProperty = "job";\n'+
+                'console.log(james[aProperty])\n');
+            
+            var james = {
+                job: "programmer",
+                married: false
+            };
+
+            // set to the first property name of "james"
+            var aProperty = 'job';
+
+            console.log(james[aProperty])
+            
+            break;
+
+
+        case '13':
+            
+            console.log('var myObj = {\n'+
+                'name : "amir"\n'+
+                '};\n'+
+                'console.log( myObj.hasOwnProperty("name") ); // should print true\n'+
+                'console.log( myObj.hasOwnProperty("nickname") ); // should print false\n');
+            
+            var myObj = {
+                name : "amir"
+            };
+            console.log( myObj.hasOwnProperty('name') ); // should print true
+            console.log( myObj.hasOwnProperty('nickname') ); // should print false
+            
+            break;
+
+
+
+        case '14':
+            
+            console.log('function Dog (breed) {\n'+
+                'this.breed = breed;\n'+
+                '};\n'+
+                '\n'+
+                '// here we make buddy and teach him how to bark\n'+
+                'var buddy = new Dog("golden Retriever");\n'+
+                'Dog.prototype.bark = function() {\n'+
+                '  console.log("Woof");\n'+
+                '};\n'+
+                'buddy.bark();\n'+
+                '\n'+
+                '// here we make snoopy\n'+
+                'var snoopy = new Dog("Beagle");\n'+
+                '/// this time it works!\n'+
+                'snoopy.bark();\n');
+            
+            function Dog (breed) {
+                this.breed = breed;
+            };
+
+            // here we make buddy and teach him how to bark
+            var buddy = new Dog("golden Retriever");
+            Dog.prototype.bark = function() {
+                console.log("Woof");
+            };
+            buddy.bark();
+
+            // here we make snoopy
+            var snoopy = new Dog("Beagle");
+            /// this time it works!
+            snoopy.bark();
+            
+            break;
+
+
+
+        case '15':
+            
+            console.log('// original classes\n'+
+                'function Animal(name, numLegs) {\n'+
+                '    this.name = name;\n'+
+                '    this.numLegs = numLegs;\n'+
+                '    this.isAlive = true;\n'+
+                '}\n'+
+                'function Penguin(name) {\n'+
+                '    this.name = name;\n'+
+                '    this.numLegs = 2;\n'+
+                '}\n'+
+                'function Emperor(name) {\n'+
+                '    this.name = name;\n'+
+                '    this.saying = "Waddle waddle";\n'+
+                '}\n'+
+                '\n'+
+                '// set up the prototype chain\n'+
+                'Penguin.prototype = new Animal();\n'+
+                'Emperor.prototype = new Penguin();\n'+
+                '\n'+
+                'var myEmperor = new Emperor("Jules");\n'+
+                '\n'+
+                'console.log( myEmperor.saying ); // should print "Waddle waddle"\n'+
+                'console.log( myEmperor.numLegs  ); // should print 2\n'+
+                'console.log( myEmperor.isAlive ); // should print true\n');
+            
+            // original classes
+            function Animal(name, numLegs) {
+                this.name = name;
+                this.numLegs = numLegs;
+                this.isAlive = true;
+            }
+            function Penguin(name) {
+                this.name = name;
+                this.numLegs = 2;
+            }
+            function Emperor(name) {
+                this.name = name;
+                this.saying = "Waddle waddle";
+            }
+
+            // set up the prototype chain
+            Penguin.prototype = new Animal();
+            Emperor.prototype = new Penguin();
+
+            var myEmperor = new Emperor("Jules");
+
+            console.log( myEmperor.saying ); // should print "Waddle waddle"
+            console.log( myEmperor.numLegs  ); // should print 2
+            console.log( myEmperor.isAlive ); // should print true
+            
+            break;
+
+
+
+        case '16':
+            
+            console.log('function Person(first,last,age) {\n'+
+                '   this.firstname = first;\n'+
+                '   this.lastname = last;\n'+
+                '   this.age = age;\n'+
+                '   this.myBalance = null\n'+
+                '   var bankBalance = 7500;\n'+
+                '  \n'+
+                '   this.getBalance = function() {\n'+
+                '      // your code should return the bankBalance\n'+
+                '      return bankBalance;\n'+
+                '   };\n'+
+                '}\n'+
+                '\n'+
+                'var john = new Person("John","Smith",30);\n'+
+                'console.log(john.getBalance());\n');
+            
+            function Person(first,last,age) {
+                this.firstname = first;
+                this.lastname = last;
+                this.age = age;
+                this.myBalance = null
+                var bankBalance = 7500;
+  
+                this.getBalance = function() {
+                    // your code should return the bankBalance
+                    return bankBalance;
+                };
+            }
+
+            var john = new Person('John','Smith',30);
+            console.log(john.getBalance());
+            
+            break;
+
+
+
+        case '17':
+            
+            console.log('function StudentReport() {\n'+
+                '    this.grade1 = 4;\n'+
+                '    this.grade2 = 2;\n'+
+                '    this.grade3 = 1;\n'+
+                '    this.getGPA = function() {\n'+
+                '        return (this.grade1 + this.grade2 + this.grade3) / 3;\n'+
+                '    };\n'+
+                '}\n'+
+                '\n'+
+                'var myStudentReport = new StudentReport();\n'+
+                '\n'+
+                'for(var x in myStudentReport) {\n'+
+                '    if(typeof myStudentReport[x] !== "function") {\n'+
+                '        console.log("Muahaha! "+myStudentReport[x]);\n'+
+                '    }\n'+
+                '}\n'+
+                '\n'+
+                'console.log("Your overall GPA is "+myStudentReport.getGPA());\n');
+            
+            function StudentReport() {
+                this.grade1 = 4;
+                this.grade2 = 2;
+                this.grade3 = 1;
+                this.getGPA = function() {
+                    return (this.grade1 + this.grade2 + this.grade3) / 3;
+                };
+            }
+
+            var myStudentReport = new StudentReport();
+
+            for(var x in myStudentReport) {
+                if(typeof myStudentReport[x] !== "function") {
+                    console.log("Muahaha! "+myStudentReport[x]);
+                }
+            }
+
+            console.log("Your overall GPA is "+myStudentReport.getGPA());
+            
+            break;
+            
     }
   
 
