@@ -419,7 +419,15 @@
             console.log("Your overall GPA is "+myStudentReport.getGPA());
             
             break;
+        
+        case '18':
             
+            console.log('matches = ['12', 'watt'];\n'+
+                        '[value, unit] = matches; \n');
+            var matches = ['12', 'watt'];
+            [value, unit] = matches; 
+            console.log(value + " " + unit);
+            break;    
     }
   
 
