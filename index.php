@@ -328,6 +328,7 @@
 
             // set up the prototype chain
             Penguin.prototype = new Animal();
+            Penguin.prototype.constructor = Penguin;
             Emperor.prototype = new Penguin();
 
             var myEmperor = new Emperor("Jules");
@@ -422,8 +423,9 @@
         
         case '18':
             
-            console.log('matches = ['12', 'watt'];\n'+
+            console.log('matches = ["12", "watt"];\n'+
                         '[value, unit] = matches; \n');
+
             var matches = ['12', 'watt'];
             [value, unit] = matches; 
             console.log(value + " " + unit);
