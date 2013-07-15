@@ -1,12 +1,6 @@
 <script type="text/javascript" src="function.js"></script>
 <script type="text/javascript">
 
-    //<<<<<<< HEAD
-    // www folder change
-    //=======
-    // new changes
-
-    // >>>>>>> 9bdab274a28b18b27706d08c8b38daf03e849c3f
     switch(getUri()){
     
         case '1':
