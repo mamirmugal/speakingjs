@@ -126,4 +126,12 @@ new Promise(function (resolve, reject) {
 ### forEach
 - [https://developers.google.com/web/fundamentals/getting-started/primers/promises]
 - we can use `sequence`
-- which should be `sequence = sequence.then`, without assigning to sequence it will become parallel 
+- which should be `sequence = sequence.then`, without assigning to sequence it will become parallel
+
+### All
+- `.map` return an array
+- takes array of promises
+- return array of values with same order it was send
+- but if any one rejects then all promise rejects
+- resolves only when all of them are resolved
+ 
