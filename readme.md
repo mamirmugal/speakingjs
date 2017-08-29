@@ -2,174 +2,145 @@
 
 ## Part III
 
-## Statements
-- `var` is used to declare variable is a statement
-- equal operator is used to assign value is a statement
+## Exception Handling
+- here are two aspects to exception handling:
+    - If there is a problem that can’t be handled meaningfully where it occurs, throw an exception.
+    - Find a place where errors can be handled: catch exceptions.
 
-### Loops
-- `break` and `continue` have labels, will break the second loop and continue on
+
+
+### Exception Handling in JavaScript
+- throw, always use error constructor, never use simple string
 ```
-one: {
-    for (var i=0; i<10; i++){
-        console.log("i " + i);
+if (somethingBadHappened) {
+    throw new Error('Something bad happened');
+}
+```
 
-        two: {
-            for (var j=0; j<10; j++){
-                console.log("j " + j);
-                if(j == 5){
-                    break two;
-                }
-            }
-        }
 
+### try-catch-finally
+- `try` is mandatory, and at least one of `catch` and `finally` must be there, too
+```
+try {
+    «try_statements»
+}
+⟦catch («exceptionVar») {
+   «catch_statements»
+}⟧
+⟦finally {
+   «finally_statements»
+}⟧
+```
+
+
+### Example
+```
+function throwIt(exception) {
+    try {
+        throw exception;
+    } catch (e) {
+        console.log('Caught: '+e);
     }
 }
+
 ```
 
 
-### While
+### Finally
+- it is return in every cost
 ```
-while («condition»)
-    «statement»
-```
-- when condition is true and execute the statement
-```
-var arr = [ 'a', 'b', 'c' ];
-while (arr.length 0) {
-    console.log(arr.shift());
+function idLog(x) {
+    try {
+        console.log(x);
+        return 'result';
+    } finally {
+        console.log("FINALLY");
+    }
 }
+
+idLog('arg')
+arg
+FINALLY
+'result'
 ```
 
-
-
-### do-while
 ```
-do «statement»
-while («condition»);
-```
-- execute the statement and then check the condition
-
-
-### For
-```
-for (⟦«init»⟧; ⟦«condition»⟧; ⟦«post_iteration»⟧)
-    «statement»
-```
-
-- with while loop
-```
-«init»;
-while («condition») {
-    «statement»
-    «post_iteration»;
+var count = 0;
+function countUp() {
+    try {
+        return count;
+    } finally {
+        count++;  // (1)
+    }
 }
-```
 
-
-### for-in
-```
-for («variable» in «object»)
-    «statement»
-```
-
-- Should not be used for arrays, it dont sames some values
-```
-var arr = [ 'a', 'b', 'c' ];
-arr.foo = true;
-for (var key in arr) { console.log(key); }
+countUp()
 0
+count
 1
-2
-foo
 ```
 
-- it can be used to display all properties and method if an object instance
 
-
-### If-Else
-- beware of `dangling else`
+### Stack Traces
 ```
-if («cond1») if («cond2») «stmt1» else «stmt2»
-```
-
-- it is better to use brackets
-```
-if («cond1») {
-    if («cond2») {
-        «stmt1»
-    } else {
-        «stmt2»
+function catchIt() {
+    try {
+        throwIt();
+    } catch (e) {
+        console.log(e.stack); // print stack trace
     }
 }
-```
-
-
-### Switch
-```
-switch («expression») {
-    case «label1_1»:
-    case «label1_2»:
-        ...
-        «statements1»
-        ⟦break;⟧
-    case «label2_1»:
-    ⟦default:
-        «statements_default»
-        ⟦break;⟧⟧
-}
-```
-- switch expression is compared with `===`
-- `return` and `throw` also works instead of break, but if non is given then js will move to next case
-```
-function categorizeColor(color) {
-    var result;
-    switch (color) {
-        case 'red':
-        case 'yellow':
-        case 'blue': // this statement will run when value is red, yellow and blue
-            result = 'Primary color: '+color;
-            break;
-        default:
-            throw 'Illegal argument: '+color;
-    }
-    console.log(result);
+function throwIt() {
+    throw new Error('');
 }
 
-categorizeColor('red')
-Primary color: red
-
-categorizeColor('yellow')
-Primary color: yellow
-
-categorizeColor('blue')
-Primary color: blue
-```
-
-
-### The with Statement
-**NOTE** The with Statement Is Deprecated
+catchIt()
+Error
+    at throwIt (~/examples/throwcatch.js:9:11)
+    at catchIt (~/examples/throwcatch.js:3:9)
+    at repl:1:5
 
 ```
-with («object»)
-    «statement»
+
+
+### Error Constructors
+- error properties
+    - message
+        - The error message.
+    - name
+        - The name of the error.
+    - stack
+        - A stack trace. This is nonstandard, but is available on many platforms—for example, Chrome, Node.js, and Firefox.
+
+- Error, generic error
+- RangeError "indicates a numeric value has exceeded the allowable range."
+```
+new Array(-1)
+RangeError: Invalid array length
 ```
 
-- It turns the properties of object into local variables for statement
+- ReferenceError "indicates that an invalid reference value has been detected."
 ```
-var obj = { first: 'John' };
-with (obj) {
-    console.log('Hello '+first); // Hello John
-}
+unknownVariable
+ReferenceError: unknownVariable is not defined
 ```
 
-- it is also used to assign value to complex objects
+- SyntaxError "indicates that a parsing error has occurred"
 ```
-foo.bar.baz.bla   = 123;
-foo.bar.baz.yadda = 'abc';
+3..1
+SyntaxError: Unexpected number '.1'. Parse error.
+eval('5 +')
+SyntaxError: Unexpected end of script
+```
 
-with (foo.bar.baz) {
-    bla   = 123;
-    yadda = 'abc';
-}
+- TypeError "indicates the actual type of an operand is different than the expected type."
+```
+undefined.foo
+TypeError: Cannot read property 'foo' of undefined
+```
 
+- URIError "indicates that one of the global URI handling functions was used in a way that is incompatible with its definition."
+```
+decodeURI('%2')
+URIError: URI malformed
 ```
