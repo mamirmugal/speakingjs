@@ -2,258 +2,272 @@
 
 ## Part III
 
-## Numbers
-- it is double(64bit) and represented as floating value
-- number literal can be integer, floating point or hexadecimal
-- invoking methods on literal
+## Strings
+- they are immutable
+- each character is a 16-bit unit
+
+
+### String Literals
+- string literal is presented by single and double quotes
+
+
+
+### Escaping in String Literals
+- backslash i used for escaping and enables special features
+- it can be used to to spread string on multiple lines
 ```
-123..toString()
-123 .toString()  // space before the dot
-123.0.toString()
-(123).toString()
+var str = 'written \
+over \
+multiple \
+lines';
+console.log(str === 'written over multiple lines'); // true
+
+var str = 'written ' +
+          'over ' +
+          'multiple ' +
+          'lines';
+```
+
+- Control characters:
+    - \b is a backspace
+    - \f is a form feed
+    - \n is a line feed (newline)
+    - \r is a carriage return
+    - \t is a horizontal tab
+    - \v is a vertical tab.
+
+- NUL character in unicode
+    - `\0`
+
+- Hexadecimal also represented by backslash
+- Unicode also represented by backslash
+
+
+
+### Character Access
+- 2 ways to get character
+```
+'abc'.charAt(1)
+'b'
+
+'abc'[1]
+'b'
 ```
 
 
-## Converting to Number
-- undefined to NaN
-- null to 0
-- false to 0
-- true to 1
-- string is parsed, number to number
-- converts to resulting primitive, NaN
+### Converting to string
+- undefined to 'undefined'
+- null to 'null'
+- false to 'false'
+- true to 'true'
+- number to '123'
+- object will be convert to primitive type and then to string
 ```
-Number('')
-0
-Number('123')
-123
-Number('\t\v\r12.34\n ')  // ignores leading and trailing whitespace
-12.34
+String({foo:"bar"})
+"[object Object]"
+```
+- `JSON.stringfy()` can be used for objects, but it has limitations and cannot show value which it cannot handle
 
-Number(false)
-0
-Number({foo:"bar"})
-NaN
+**Note**
+- values which are converted to string sometimes cannot be converted back to its original value
 ```
+String(false)
+'false'
 
-
-## ParseFloat()
-- use `Number()` instead of `ParseFloat()`
-
-```
-parseFloat(true)  // same as parseFloat('true')
-NaN
-Number(true)
-1
-
-parseFloat(null)  // same as parseFloat('null')
-NaN
-Number(null)
-0
-```
-
-- but will create problem if leading or use of illegal character with number
-```
-parseFloat('123.45#')
-123.45
-Number('123.45#')
-NaN
-```
-
-
-## Special Number Values
-- NaN
-    - NaN meaning `Not a number` is actually a number
-```
-typeof NaN
-'number'
-```
-
-- parsing error
-```
-Number('xyz')
-NaN
-Number(undefined)
-NaN
-```
-
-- An operation failed
-```
-Math.acos(2)
-NaN
-Math.log(-1)
-NaN
-```
-
-- any operation dealing with `NaN`
-```
-NaN + 3
-NaN
-25 / NaN
-NaN
-```
-
-- `isNaN` will not work on strings
-```
-isNaN('xyz')
+Boolean('false') // because non-empty string is treated as true
 true
 ```
 
-#### Infinity
-- is actually an error
-- number which has very large value, so it will show `infinity`
-```
-Infinity - Infinity
-NaN
-Infinity / Infinity
-NaN
 
-Infinity + Infinity
-Infinity
-Infinity * Infinity
-Infinity
+### Concatenating Strings
+- using plus (+) operator
+```
+var str = '';
+str += 'Say hello ';
 ```
 
-- anything divided by zero
+- use array to push string and join it
 ```
-3 / 0
-Infinity
-3 / -0
--Infinity
+var arr = [];
+arr.push('Say hello ');
+arr.push(7);
+arr.join('')
+'Say hello 7'
 ```
 
-- `isFinite()` to check if value is finite
+
+**Note**
+- on some new engines use + operator internally, so on those engines + operators are faster then array method
+
+
+
+### The Function String
+- with `String` function
 ```
-isFinite(5)
+String(123)
+'123'
+
+typeof String('abc')  // no change
+'string'
+```
+
+- with `new String()` constructor
+```
+new String(123)
+[String: '123']
+
+a == 123
 true
-isFinite(Infinity)
+
+a === 123
 false
-isFinite(NaN)
-false
-```
 
-- As js has 2 zeros, we should always assume it has one zero
-```
--0
-0
-(-0).toString()
-'0'
-(+0).toString()
-'0'
-+0 === -0
-true
-```
-
-
-## Integers in JavaScript
-- integer is upt 53 bit magnitude
-
-
-## Converting to Integer
-- all number are float
-    - convert to integer with `Math.floor()`, `Math.ceil()` and `Math.round()`
-```
-Math.floor(3.8)
-3
-Math.floor(-3.8)
--4
-
-Math.ceil(3.2)
-4
-Math.ceil(-3.2)
--3
-
-Math.round(3.2)
-3
-Math.round(3.5)
-4
-Math.round(3.8)
-4
-
-Math.round(-3.2)
--3
-Math.round(-3.5)
--3
-Math.round(-3.8)
--4
-```
-
-
-- Integer with custom method `ToInteger()`
-	- it is internal ECMAScript
-	
-```
-ToInteger(3.2)
-3
-ToInteger(3.5)
-3
-ToInteger(3.8)
-3
-ToInteger(-3.2)
--3
-ToInteger(-3.5)
--3
-ToInteger(-3.8)
--3
-```
-
-
-### Arithmetic Operators
-- if any one of them is string other is converted to string and added to it
-```
-3.1 + 4.3
-7.4
-4 + ' messages'
-'4 messages'
-'10' + 10 + 12
-101012
-10 + '10' + 12
-101012
-```
-
-
-### Bitwise Operators
-- they work on 32-bit integer and generate 32-bit result
-
-
-### The Function Number
-- convert string to number
-```
-Number('123')
-123
-typeof Number(3)  // no change
-'number'
-```
-
-- but with new operator it's type is `object`
-```
-typeof new Number(3)
+typeof new String('abc')
 'object'
 ```
 
 
-### Number Constructor Properties
-- Number.MAX_VALUE
-- Number.MIN_VALUE
-- Number.NaN
-- Number.NEGATIVE_INFINITY
-- Number.POSITIVE_INFINITY
-
-
-### Number Prototype Methods
-- Number.prototype.toFixed
-    - will fix the length of the number
+### String Constructor Method
+- character code to string
 ```
-0.0000003.toFixed(10)
-'0.0000003000'
+String.fromCharCode(97, 98, 99)
+'abc'
+```
+- use array of character code, then we need to use `apply`
+```
+String.fromCharCode.apply(null, [97, 98, 99])
+'abc'
 ```
 
 
-### Functions for Numbers
-- isFinite(number)
-    - Checks whether number is an actual number
-- isNaN(number)
-    - Returns true if number is NaN
-- parseFloat(str)
-    - turns string into floating point number
-- parseInt(str)
-    - turn string to integer
+### String Instance Property length
+```
+'abc'.length
+3
+```
+
+
+### String Prototype Methods
+- get character by position, `String.prototype.charAt(pos)`
+```
+'abc'.charAt(1)
+'b'
+
+'abc'[1]
+'b'
+```
+
+- getting 16 UTF-code unit, ascii code, `String.prototype.charCodeAt(pos)`
+```
+"asdfasdf".charCodeAt(3)
+102
+```
+
+- return substring `String.prototype.slice(start, end?)`, **NOTE** first index is `0` index
+```
+'abc'.slice(2)
+'c'
+
+'abc'.slice(1, 2)
+'b'
+
+'abc'.slice(-2)
+'bc'
+```
+
+- break string to array, `String.prototype.split(separator?, limit?)`
+```
+'a,  b,c, d'.split(',')  // string
+[ 'a', '  b', 'c', ' d' ]
+
+'a,  b,c, d'.split(/,/)  // simple regular expression
+[ 'a', '  b', 'c', ' d' ]
+
+'a,  b,c, d'.split(/, */)   // more complex regular expression
+[ 'a', 'b', 'c', 'd' ]
+
+'a,  b,c, d'.split(/, */, 2)  // setting a limit
+[ 'a', 'b' ]
+
+'test'.split()  // no separator provided
+[ 'test' ]
+
+'abc'.split('')
+[ 'a', 'b', 'c' ]
+```
+
+
+
+### Transform
+- remove white spaces and return too, `String.prototype.trim()`
+```
+'\r\nabc \t'.trim()
+'abc'
+```
+
+- concat string, `String.prototype.concat(str1?, str2?, ...)`
+```
+'hello'.concat(' ', 'world', '!')
+'hello world!'
+```
+
+- lower case `String.prototype.toLowerCase()`
+- upper case `String.prototype.toUpperCase()`
+
+
+
+### Search and Compare
+- `indexOf`, will `-1` if not found , `String.prototype.indexOf(searchString, position?)`
+```
+'aXaX'.indexOf('X')
+1
+
+'aXaX'.indexOf('X', 2)
+3
+```
+
+- `lastIndexOf`, same as indexOf but search from last, `String.prototype.lastIndexOf`
+
+
+
+### Test, Match, and Replace with Regular Expressions
+- `search` will return `-1` when not found
+```
+'-yy-xxx-y-'.search(/x+/)
+4
+```
+
+- `match` will return array
+    - will return with first value found if `/g` is not set
+```
+'-abb--aaab-'.match(/(a+)b/)
+[ 'ab',
+'a',
+index: 1,
+input: '-abb--aaab-' ]
+```
+
+    - if `/g` is set then it will check whole string
+```
+'-abb--aaab-'.match(/(a+)b/g)
+[ 'ab', 'aaab' ]
+```
+
+- `replace`, will replace value, `String.prototype.replace(search, replacement)`
+    - if `/g` is not set then only first will be replaced
+```
+'iixxxixx'.replace('i', 'o')
+'oixxxixx'
+
+'iixxxixx'.replace(/i/g, 'o')
+'ooxxxoxx'
+```
+
+- `$` will allow to completely match the string
+```
+'iixxxixx'.replace(/i+/g, '($&)') // complete match
+'(ii)xxx(i)xx'
+
+'iixxxixx'.replace(/(i+)/g, '($1)') // group 1
+'(ii)xxx(i)xx'
+```
