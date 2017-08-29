@@ -311,3 +311,20 @@ Object(undefined)
 {}
 ```
 
+
+### Algorithm: ToPrimitive()—Converting a Value to a Primitive
+- ToPrimitive() is not present in javascript
+    - `ToPrimitive(input, PreferredType?)`
+- If `PreferredType` is Number, then you perform the following steps:
+    - If input is primitive, return it (there is nothing more to do).
+    - Otherwise, input is an object. Call input.valueOf(). If the result is primitive, return it.
+    - Otherwise, call input.toString(). If the result is primitive, return it.
+    - Otherwise, throw a TypeError (indicating the failure to convert input to a primitive).
+
+```
+var empty = {};
+empty.valueOf()
+{}
+empty.toString()
+"[object Object]" // string returned
+```
