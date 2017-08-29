@@ -1,406 +1,313 @@
 # Speaking JS ES5
 
-## Part I
+## Part III
 
-### Background
-- ECMAScript is the official name of javascript
-- ECMAScript is used to version JS, ES5 or ES6
-- Js did not have exception handling until ES3, because it could not throw exceptions
-- In other language you learn language features, but in JS you learn patterns
-- JS is mixture of functional programming (higher-order functions; built-in map, reduce, etc.) and object-oriented programming (objects, inheritance).
+## JavaScript’s Syntax
 
+### Expression
+- They produce something, right side of an assignment or function arguments
+- `out = m ? true : false`  right side is an expression
 
 
-### Statements, the do things
-- `var foo`
+
+### Statements
+- They preform task, `loops` and `if` are statements
+- A program is a sequence of statements
+
+
+
+### Ambiguous expressions as statements
+- object literal, with function assigned to variable
+- Named function `function fo(){}`, this will create a function and assigned to a variable
+- expression cannot start with `{` or keyword `function`
+
+
+
+### Eval and object literal
+- object literal in defined in parentheses, in eval function
 ```
-var x;
-if(y > 0)
-    x = y
-```
-
-- Expressions, they produce values
-    - `3 * 7`
-    - `var x = y > 0 ? y: -y`
-    - `foo(x, y)`
-
-
-
-### Semicolons
-- Should be used, tell js about the end of the line
-- if an expression comes last in a statement, we will use semicolon
-    - `var f = function(){};`
-
-
-
-### Compound Assignment Operators
-- `var x += 1`
-
-
-
-### Identifiers and Variable Names
-- first character can be unicode, `$`, `_`
-- reserved words, `Infinity`, `NaN`, `undefined`
-
-
-
-### Primitive Values Versus Objects
-- the primitive values are boolean, numbers, strings, null and undefined
-- all other values are objects
-- the difference is that they are only unique to each other
-```
-var obj1 = {};  // an empty object
-var obj2 = {};  // another empty object
-obj1 === obj2   // false
-obj1 === obj1   // true
+eval('{ foo: 123 }')
+123
+eval('({ foo: 123 })')
+{ foo: 123 }
 ```
 
-- how ever all primitives encoded the same value will be same
+
+### No semicolon after statement that end with a block
+- loops, `for, while`
+- Branching `if, switch, try, catch`
+- function declaration
+
+
+
+### Invoking Methods on Number Literals
+- we can use one of the followings
 ```
-var prim1 = 123, prim2 = 123;
-prim1 === prim2  // true
+1..toString()
+1 .toString()  // space before dot
+(1).toString()
+1.0.toString()
 ```
+
+
+### Strict mode
+- function declaration cannot be inside another function declaration, but function expression will work
+- However by personal test on crome and node function inside function works
+- in this mode `this` in function will point to `undefined`, in normal it points to window/global object
+- in normal function `this` will not work when funciton is called normally
+** Note: if a funciton needs to called normally then `this` should not be used inside it**
+```
+function strictFunc() {
+    'use strict';
+    console.log(this === undefined);  // true
+}
+
+stricFunc()
+```
+
+- in strict mode, if `new` is not used with constructors to declare new object, it will throw error
+- if `this` is used insede a function then normal call will not work, this type of function will be used to create instance
+**Note: if a function has `this` inside it, then its instance should be created** 
+```
+function Point(x) {
+    'use strict';
+    this.x = x;
+}
+ var pt = Point(3);
+TypeError: Cannot set property 'x' of undefined
+```
+
+- setting or deleting immutable properties will through exception
+```
+var str = 'abc';
+function strictFunc() {
+    'use strict';
+    str.length = 7; // TypeError: Cannot assign to read-only property 'length'
+}
+```
+
+- deleting unqualified identifiers (an object)
+    - but we can use different method to delete object
+```
+delete window.foo;  // browsers
+delete global.foo;  // Node.js
+delete this.foo;    // everywhere (in global scope)
+```
+
+- Forbidden features in strict mode
+    - `with` statement is not allowed anymore
+    - octal numbers are not allowed `010`
+
+
+########################################################################
+
+## Values
+
+
+
+### JS 6 types
+- undefined, null
+- bool, string, number
+    - when strictly checked it will return true
+- objects
+    - when strictly checked it will return false, as all object have unique identity
 
 
 
 ### Primitive Values
-- Boolean, `true, false`
-- Number, `54, 23.3`
-- String, `"asdf", 'asdf'`
-- Two non-values, `undefined` and `null`
-- they are always immutable
-    - there property cannot be changes, added or removed
+- undefined, null, bool, string, number
+- always immutable
+    - their property cannot be change, removed or added
 ```
-var str = 'abc';
-
-str.length = 1; // try to change property `length`
-str.length      // ⇒ no effect
-3
-
-str.foo = 3; // try to create property `foo`
-str.foo      // ⇒ no effect, unknown property
-'undefined'
+var str = 'abe'
+str.lenght = 9          // will not owrk
+str.foo = "new value"   // will not owrk
+str.foo                 // will not owrk
 ```
 
 
+### Nonprimitive values (Objects)
+- objects, created by object literal
+- Array, created by array literal
+- Regular expression, Regular expression literal
 
-### Objects
-- all non-primitive values are objects
-- are equal only to its own value, so every value has its own identity
-- mutable by default
-    - can change, add and remove properties
+
+
+#### Object characteristics
+- all objects have unique identity, so they are never same
+- they are mutable, property can be added, deleted and changed
+- user-extensible, constructors can be created and used
+
+
+
+### Nonvalue (undefined and null)
+- they are neither primitive nor object
+- `undefined`, means `no value`
+    - uninitialized variable, missing param, missing property will return undefined
+- `null`, means `no object`,
+    - `null` is assigned
+    - `null` in the last element in pototype chain
+    - `null` is returned when `RegExp.prototype.exec()` dont match anything in a string
+
+
+
+### Checking undefined and null
+- by checking both
 ```
-var obj = {};
-obj.foo = 123; // add property `foo`
-obj.foo
+if(x !== undefined && x !== null)
+```
+
+- by checking truthly or falsy
+```
+if(x){}
+if(!x){}
+```
+**Note**
+- `false, 0, NaN, ""` are also falsy
+
+
+
+### Wrapper Objects for Primitives
+- primitive type constructors return object type, with `new` operator
+    - `new` operator creates an object, `new` operator is used with constructor
+- but without `new` operator they will turn specific type
+```
+typeof new String('abc')
+'object'
+typeof String(123)
+'string'
+```
+
+**Note**
+- we need to avoid object wrapper
+- wrapper objects are not primitives, they return object, and objects are never equal
+
+
+
+### Wrapping primitives
+- the only use case is that we can use them to add properties
+
+
+
+### Extracting values form wrapped objects
+- they will not work for `boolean`
+```
+Boolean(new Boolean(false))  // does not unwrap
+true
+Number(new Number(123))  // unwraps
 123
+String(new String('abc'))  // unwraps
+'abc'
 ```
 
-- `plain object` created by object literal
+
+
+### Primitives Borrow Their Methods from Wrappers
+- so
 ```
-{
-    firstName: 'Jane',
-    lastName: 'Doe'
-}
-```
-
-- `array`, created by array literal
-    - `[ 'apple', 'banana', 'cherry' ]`
-
-- `regular expression` which is created by regular expression literal
-    - `/^a+b+$/`
-
-
-
-### Nonvalues - undefined and null
-- `undefined` mean no value, or read non-existing value
-```
-var foo;
-foo
-'undefined'
-
-function f(x) { return x }
-f()
-'undefined'
-
-var obj = {}; // empty object
-obj.foo
-'undefined'
-```
-
-- `undefined` and `null` have no properties, not even standard methods such as `toString()`.
-- `null` is a special keyword that indicates an absence of value.
-- [stackoverflow help](https://stackoverflow.com/questions/5076944/what-is-the-difference-between-null-and-undefined-in-javascript)
-- `false, 0, NaN, '', null, undefined` are also considered false.
-
-
-
-### Categorizing Values Using typeof and instanceof
-- `typeof` mainly used for primitive values
-- `instanceof` is manly used for object values
-- `typeof null` returning `object` is a bug that can’t be fixed, but it is not an object
-```
-var b = new Bar();  // object created by constructor Bar
-b instanceof Bar
-true
-
-{} instanceof Object
-true
-[] instanceof Array
-true
-[] instanceof Object  // Array is a subconstructor of Object
+'abc'.charAt === String.prototype.charAt
 true
 ```
 
-
-
-### Booleans
-- primitive boolean type will provide boolean value
-- some operators can provide boolean
-    - binary logical operator `&&`, `||`
-    - prefix logical operator `!`
-    - comparison operator `==`, `!=`, `!==`, `===`, `>`, `>=`, `<=`, `<`
-
-
-
-### Truthy and Falsy
-- values interpreted as true are called truthy
-- values interpreted as false are called falsy
-- `Boolean()` function is used to get boolean result
-- the value which will return false
-    - undefined, null, false, 0, NaN, '' (empty string)
+- Sloppy mode `this` will point to `String` object
 ```
-Boolean(3)
+String.prototype.sloppyMethod = function () {
+    console.log(typeof this); // object
+    console.log(this instanceof String); // true
+};
+''.sloppyMethod(); // call the above method
+```
+
+- In strict mode `this` will point to `string` which is before `.` Dot
+```
+String.prototype.strictMethod = function () {
+    'use strict';
+    console.log(typeof this); // string
+    console.log(this instanceof String); // false
+};
+''.strictMethod(); // call the above method
+```
+
+
+### Type Coercion
+- which convert the type of a value to another
+- like when number in string are multiplied they will be converted to number
+```
+'3' * '4'
+12
+```
+- and if one is string and plus is used it will be converted to string
+```
+3 + ' times'
+'3 times'
+```
+
+
+### Functions for Converting to Boolean, Number, String, and Object
+
+
+
+#### Boolean
+- following values are converted to false
+    - undefined, null
+    - false
+    - 0, NaN
+    - ""
+- all other values are converted to true, including objects
+
+
+
+#### Number
+- conversion
+    - undefined becomes NaN
+    - null becomes 0
+    - false becomes 0
+    - true becomes 1
+    - string are parsed
+    - Objects are first converted to primitives, which are then converted to numbers.
+
+
+
+#### String
+- Objects are first converted to primitives, which are then converted to strings.
+```
+String(null)
+'null'
+
+String(123.45)
+'123.45'
+
+String(false)
+'false'
+
+String({name:"obj"})
+"[object Object]"
+```
+
+
+#### Objects
+- objects of primitives return there wrapper functions
+```
+Object(123)
+Number {[[PrimitiveValue]]: 123}
+
+Object('abc') instanceof String
 true
-Boolean({}) // empty object
+
+var obj = { foo: 123 };
+Object(obj) === obj
 true
-Boolean([]) // empty array
-true
+
+Object(false)
+Boolean {[[PrimitiveValue]]: false}
 ```
 
-
-
-### Binary Logical Operators
-- they are `short-circuiting`, meaning if first condition is determined then second will not be evaluated
-    - this mean if first condition is `true` with `or` operator then it will return `true`
-    - again if first condition is `false` with `and` operator then it will return `false`
-- `&&`, if first is false, return it, otherwise return second
-- `or`, if first is true, return it, otherwise return second
-
-
-
-### Equality Operators
-- they are of 2 type
-    - normal, `==`, `!=`
-    - strict, `  = = = ` ,  ` != = = `
-- recommendation, always use strict
-
-
-
-### Number
-- All number in JS is floating point
-    - `1 === 1.0`, will give true
-- An error value
-    - `NaN`, when a value cannot be converted to number, it will return `NaN`
-    - `Infinity`, an number with is too large or too small is infinity
-
-
-
-### Strings
-- Strings can be created directly via string literals
-- These literals can be single or double quotes
-- single character can be accessed by brackets, like an array
-- length can be calculated by `.length`
-- `String Operators` can be joined by `+` operator
-
-
-
-### Functions
-- 2 ways to define function, declaration and assigning function expression
-- in declaration, we can call function before declaration code
-- in assigned, we cannot call the function before assigned code
-
-
-
-### The Special Variable arguments
-- function can be passed any number of arguments and can be accessed by `arguments`, is an array
-- if nothing is passed `arguments` will return undefined
-- assigning default values to function argument
+- but undefined and null will return empty object
 ```
-function pair(x, y) {
-    x = x || 0;  // (1)
-    y = y || 0;
-    return [ x, y ];
-}
+Object(null)
+{}
+
+Object(undefined)
+{}
 ```
 
-
-### Enforcing an Arity
-```
-function pair(x, y) {
-    if (arguments.length !== 2) {
-        throw new Error('Need exactly 2 arguments');
-    }
-    ...
-}
-```
-
-
-
-### Converting arguments to an Array
-- `arguments` is not array
-```
-function toArray(arrayLikeObject) {
-    return Array.prototype.slice.call(arrayLikeObject);
-}
-```
-
-
-### Strict Mode
-- `user strict`, will make js more strict
-
-
-
-### Variable Scoping and Closures
-- variable is declared with `var`, `var x=1, y=2;`
-- variable in declared in function will have its scope form its declaration line to the end of the function
-
-
-
-### Closures
-- the function retains is scope after leaving its scope
-
-
-
-### Single Objects
-- value can be set and get with objects
-- a function can be a part of an object and can be called
-- get new property will return `undefined`
-- `property in object` will return true if it exists
-- `delete` keyword will delete property
-- object can have property with `key` and `value`
-- property can be defined with `.` or `[]` can be used to get or set value
-
-
-
-### Extracting Methods
-- if method is extracted from object it loses its connection, and throw an error
-```
-var jane = {
-names: "funcs",
-describe: function(){
-        'use strict';
-        return this.names;
-    }
-}
-
-var func = jane.describe;
-func()
-"TypeError: Cannot read property 'name' of undefined"
-```
-
-- we can use bind to extract method
-```
-var obj = {
-  names:"Person named Jane"
-}
-var f = jane.describe.bind(obj);
-f()
-'Person named Jane'
-```
-
-- we can also bind methods, passing name with new object
-```
-var jane = {
-names: "Jane",
-describe: function(){
-        'use strict';
-        return this.names;
-    },
-tst: function(){
-        return this.age() + " " + this.names;
-    }
-}
-
-var obj = {
-  names:"Obj",		// here we are passing name as well
-  age: function(){
-    return 89
-  }
-}
-var f = jane.tst.bind(obj)
-f();
-"89 amir"
-``` 
-
-- bind method but not adding `names` will give error
-```
-var jane = {
-names: "Jane",
-describe: function(){
-        'use strict';
-        return this.names;
-    },
-tst: function(){
-        return this.age() + " " + this.names;
-    }
-}
-
-
-var obj = {			// note names property is missing
-  age: function(){
-    return 89
-  }
-}
-var f = jane.tst.bind(obj)
-f();
-"89 undefined" 		// so names will be undefined
-```
-
-- **Note when binding, the binding function will not access methods from binded object** 
-```
-var jane = {
-names: "Jane",
-describe: function(){
-        'use strict';
-        return this.names;
-    },
-tst: function(){
-        return this.age() + " " + this.describe();
-    }
-}
-
-
-var obj = {
-  age: function(){
-    return 89
-  }
-}
-var f = jane.tst.bind(obj)
-f();
-'Uncaught TypeError: this.describe is not a function'
-```
-
-
-
-### Functions Inside a Method
-- this is a special variable in js, so when using in function inside method, always assign to a variable
-
-
-### Arrays
-- array are as objects
-- array methods
-    - `slice`
-    - `push`
-    - `pop`
-    - `shift`
-    - `unshift`
-    - `indexOf`
-    - `join`
-- iterate can be done by `forEach(function(ele, i){})`
-
-
-### Regular Expression
-- `.test()` will return bool
-- `.exec()` will match and capture group
-- `.replace()` will search and replace
