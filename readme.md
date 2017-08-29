@@ -2,272 +2,174 @@
 
 ## Part III
 
-## Strings
-- they are immutable
-- each character is a 16-bit unit
+## Statements
+- `var` is used to declare variable is a statement
+- equal operator is used to assign value is a statement
 
-
-### String Literals
-- string literal is presented by single and double quotes
-
-
-
-### Escaping in String Literals
-- backslash i used for escaping and enables special features
-- it can be used to to spread string on multiple lines
+### Loops
+- `break` and `continue` have labels, will break the second loop and continue on
 ```
-var str = 'written \
-over \
-multiple \
-lines';
-console.log(str === 'written over multiple lines'); // true
+one: {
+    for (var i=0; i<10; i++){
+        console.log("i " + i);
 
-var str = 'written ' +
-          'over ' +
-          'multiple ' +
-          'lines';
-```
+        two: {
+            for (var j=0; j<10; j++){
+                console.log("j " + j);
+                if(j == 5){
+                    break two;
+                }
+            }
+        }
 
-- Control characters:
-    - \b is a backspace
-    - \f is a form feed
-    - \n is a line feed (newline)
-    - \r is a carriage return
-    - \t is a horizontal tab
-    - \v is a vertical tab.
-
-- NUL character in unicode
-    - `\0`
-
-- Hexadecimal also represented by backslash
-- Unicode also represented by backslash
-
-
-
-### Character Access
-- 2 ways to get character
-```
-'abc'.charAt(1)
-'b'
-
-'abc'[1]
-'b'
+    }
+}
 ```
 
 
-### Converting to string
-- undefined to 'undefined'
-- null to 'null'
-- false to 'false'
-- true to 'true'
-- number to '123'
-- object will be convert to primitive type and then to string
+### While
 ```
-String({foo:"bar"})
-"[object Object]"
+while («condition»)
+    «statement»
 ```
-- `JSON.stringfy()` can be used for objects, but it has limitations and cannot show value which it cannot handle
-
-**Note**
-- values which are converted to string sometimes cannot be converted back to its original value
+- when condition is true and execute the statement
 ```
-String(false)
-'false'
-
-Boolean('false') // because non-empty string is treated as true
-true
-```
-
-
-### Concatenating Strings
-- using plus (+) operator
-```
-var str = '';
-str += 'Say hello ';
-```
-
-- use array to push string and join it
-```
-var arr = [];
-arr.push('Say hello ');
-arr.push(7);
-arr.join('')
-'Say hello 7'
-```
-
-
-**Note**
-- on some new engines use + operator internally, so on those engines + operators are faster then array method
-
-
-
-### The Function String
-- with `String` function
-```
-String(123)
-'123'
-
-typeof String('abc')  // no change
-'string'
-```
-
-- with `new String()` constructor
-```
-new String(123)
-[String: '123']
-
-a == 123
-true
-
-a === 123
-false
-
-typeof new String('abc')
-'object'
-```
-
-
-### String Constructor Method
-- character code to string
-```
-String.fromCharCode(97, 98, 99)
-'abc'
-```
-- use array of character code, then we need to use `apply`
-```
-String.fromCharCode.apply(null, [97, 98, 99])
-'abc'
-```
-
-
-### String Instance Property length
-```
-'abc'.length
-3
-```
-
-
-### String Prototype Methods
-- get character by position, `String.prototype.charAt(pos)`
-```
-'abc'.charAt(1)
-'b'
-
-'abc'[1]
-'b'
-```
-
-- getting 16 UTF-code unit, ascii code, `String.prototype.charCodeAt(pos)`
-```
-"asdfasdf".charCodeAt(3)
-102
-```
-
-- return substring `String.prototype.slice(start, end?)`, **NOTE** first index is `0` index
-```
-'abc'.slice(2)
-'c'
-
-'abc'.slice(1, 2)
-'b'
-
-'abc'.slice(-2)
-'bc'
-```
-
-- break string to array, `String.prototype.split(separator?, limit?)`
-```
-'a,  b,c, d'.split(',')  // string
-[ 'a', '  b', 'c', ' d' ]
-
-'a,  b,c, d'.split(/,/)  // simple regular expression
-[ 'a', '  b', 'c', ' d' ]
-
-'a,  b,c, d'.split(/, */)   // more complex regular expression
-[ 'a', 'b', 'c', 'd' ]
-
-'a,  b,c, d'.split(/, */, 2)  // setting a limit
-[ 'a', 'b' ]
-
-'test'.split()  // no separator provided
-[ 'test' ]
-
-'abc'.split('')
-[ 'a', 'b', 'c' ]
+var arr = [ 'a', 'b', 'c' ];
+while (arr.length 0) {
+    console.log(arr.shift());
+}
 ```
 
 
 
-### Transform
-- remove white spaces and return too, `String.prototype.trim()`
+### do-while
 ```
-'\r\nabc \t'.trim()
-'abc'
+do «statement»
+while («condition»);
 ```
-
-- concat string, `String.prototype.concat(str1?, str2?, ...)`
-```
-'hello'.concat(' ', 'world', '!')
-'hello world!'
-```
-
-- lower case `String.prototype.toLowerCase()`
-- upper case `String.prototype.toUpperCase()`
+- execute the statement and then check the condition
 
 
-
-### Search and Compare
-- `indexOf`, will `-1` if not found , `String.prototype.indexOf(searchString, position?)`
+### For
 ```
-'aXaX'.indexOf('X')
+for (⟦«init»⟧; ⟦«condition»⟧; ⟦«post_iteration»⟧)
+    «statement»
+```
+
+- with while loop
+```
+«init»;
+while («condition») {
+    «statement»
+    «post_iteration»;
+}
+```
+
+
+### for-in
+```
+for («variable» in «object»)
+    «statement»
+```
+
+- Should not be used for arrays, it dont sames some values
+```
+var arr = [ 'a', 'b', 'c' ];
+arr.foo = true;
+for (var key in arr) { console.log(key); }
+0
 1
-
-'aXaX'.indexOf('X', 2)
-3
+2
+foo
 ```
 
-- `lastIndexOf`, same as indexOf but search from last, `String.prototype.lastIndexOf`
+- it can be used to display all properties and method if an object instance
 
 
-
-### Test, Match, and Replace with Regular Expressions
-- `search` will return `-1` when not found
+### If-Else
+- beware of `dangling else`
 ```
-'-yy-xxx-y-'.search(/x+/)
-4
+if («cond1») if («cond2») «stmt1» else «stmt2»
 ```
 
-- `match` will return array
-    - will return with first value found if `/g` is not set
+- it is better to use brackets
 ```
-'-abb--aaab-'.match(/(a+)b/)
-[ 'ab',
-'a',
-index: 1,
-input: '-abb--aaab-' ]
-```
-
-    - if `/g` is set then it will check whole string
-```
-'-abb--aaab-'.match(/(a+)b/g)
-[ 'ab', 'aaab' ]
+if («cond1») {
+    if («cond2») {
+        «stmt1»
+    } else {
+        «stmt2»
+    }
+}
 ```
 
-- `replace`, will replace value, `String.prototype.replace(search, replacement)`
-    - if `/g` is not set then only first will be replaced
-```
-'iixxxixx'.replace('i', 'o')
-'oixxxixx'
 
-'iixxxixx'.replace(/i/g, 'o')
-'ooxxxoxx'
+### Switch
+```
+switch («expression») {
+    case «label1_1»:
+    case «label1_2»:
+        ...
+        «statements1»
+        ⟦break;⟧
+    case «label2_1»:
+    ⟦default:
+        «statements_default»
+        ⟦break;⟧⟧
+}
+```
+- switch expression is compared with `===`
+- `return` and `throw` also works instead of break, but if non is given then js will move to next case
+```
+function categorizeColor(color) {
+    var result;
+    switch (color) {
+        case 'red':
+        case 'yellow':
+        case 'blue': // this statement will run when value is red, yellow and blue
+            result = 'Primary color: '+color;
+            break;
+        default:
+            throw 'Illegal argument: '+color;
+    }
+    console.log(result);
+}
+
+categorizeColor('red')
+Primary color: red
+
+categorizeColor('yellow')
+Primary color: yellow
+
+categorizeColor('blue')
+Primary color: blue
 ```
 
-- `$` will allow to completely match the string
-```
-'iixxxixx'.replace(/i+/g, '($&)') // complete match
-'(ii)xxx(i)xx'
 
-'iixxxixx'.replace(/(i+)/g, '($1)') // group 1
-'(ii)xxx(i)xx'
+### The with Statement
+**NOTE** The with Statement Is Deprecated
+
+```
+with («object»)
+    «statement»
+```
+
+- It turns the properties of object into local variables for statement
+```
+var obj = { first: 'John' };
+with (obj) {
+    console.log('Hello '+first); // Hello John
+}
+```
+
+- it is also used to assign value to complex objects
+```
+foo.bar.baz.bla   = 123;
+foo.bar.baz.yadda = 'abc';
+
+with (foo.bar.baz) {
+    bla   = 123;
+    yadda = 'abc';
+}
+
 ```
