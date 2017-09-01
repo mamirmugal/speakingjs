@@ -2,166 +2,106 @@
 
 ## Part III
 
-## Math
+## JSON
+- Javascript Object Notation
+- is a plain text for data storage
+- used in data exchange format for web servers
 
-## Numerical Functions
-- `Math.abs(x)`
-    - Returns the absolute value of x
-
-- `Math.ceil(x)`
-    - Returns the smallest integer ≥ x
-```
-> Math.ceil(3.999)
-4
-
-> Math.ceil(3.001)
-4
-
-> Math.ceil(-3.001)
--3
-
-> Math.ceil(3.000)
-3
-```
-
-- `Math.floor(x)`
-    - Returns the largest integer ≤ x
-```
-> Math.floor(3.999)
-3
-
-> Math.floor(3.001)
-3
-
-> Math.floor(-3.001)
--4
-
-> Math.floor(3.000)
-3
-```
-
-- `Math.pow(x, y)`
-    - Returns x<sup>y</sup>, x raised to the power of y
-```
-> Math.pow(9, 2)
-81
-
-> Math.pow(36, 0.5)
-6
-```
-
-- `Math.round(x)`
-    - Returns x rounded to the nearest integer
-```
-> Math.round(3.999)
-4
-
-> Math.round(3.001)
-3
-
-> Math.round(3.5)
-4
-
-> Math.round(-3.5)
--3
-```
-
-- `Math.sqrt(x)`
-    - Returns the square root of x
-```
-> Math.sqrt(256)
-16
-```
+### JSON expression
+- Compound 
+    - object of json data and array of json data
+- Atomic
+    - Strings, numbers, boolean, and null
+    
+- Sting must be in double quoted
+- property must be in double quotes
+- no single quotes allowed
 
 
 
-## Trigonometric Functions
-- From degrees to radians
-```
-function toRadians(degrees) {
-    return degrees / 180 * Math.PI;
+## JSON.stringify(value, replacer?, space?)
+- `replacer` is a callback method or filter applied to json object when converting to string
+```angular2html
+function replacer(key, value) {
+    if (typeof value === 'number') {
+        value = 2 * value;
+    }
+    return value;
 }
 
-> toRadians(180)
-3.141592653589793
-
-> toRadians(90)
-1.5707963267948966
+> JSON.stringify({ a: 5, b: [ 2, 8 ] }, replacer)
+'{"a":10,"b":[4,16]}'
 ```
 
-- From radians to degrees
+- second param can also white list keys in objects
+```angular2html
+> JSON.stringify({foo: 1, bar: {foo: 1, bar: 1}}, ['bar'])
+
+'{"bar":{"bar":1}}'
 ```
-function toDegrees(radians) {
-    return radians / Math.PI * 180;
+- third param will add new lines to the output
+```angular2html
+> console.log(JSON.stringify({a: 0, b: ['\n']}, null, 2))
+{
+  "a": 0,
+  "b": [
+    "\n"
+  ]
 }
-
-> toDegrees(Math.PI * 2)
-360
-
-> toDegrees(Math.PI)
-180
 ```
-
-- `Math.acos(x)`
-    - Returns the arc cosine of x.
-    
-- `Math.asin(x)`
-    - Returns the arc sine of x.
-    
-- `Math.atan(x)`
-    - Returns the arc tangent of x.
-    
-- `Math.atan2(y, x)`
-    - Returns the arc tangent of the quotient .
-    
-- `Math.cos(x)`
-    - Returns the cosine of x.
-    
-- `Math.sin(x)`
-    - Returns the sine of x.
-    
-- `Math.tan(x)`
-    - Returns the tangent of x.
-    
+ 
 
 
+### Data Ignored by JSON.stringify()
+- json.stringify only considers enumerable properties
+```angular2html
+> var obj = Object.defineProperty({}, 'foo', { enumerable: false, value: 7 });
+> Object.getOwnPropertyNames(obj)
+[ 'foo' ]
 
-## Other Functions
-- `Math.min(x1?, x2?, ...)`
-    - Returns the smallest number among the parameters
-```
-> Math.min()
-Infinity
-
-> Math.min(27)
-27
-
-> Math.min(27, -38)
--38
-
-> Math.min(27, -38, -43)
--43
-
-> Math.min.apply(null, [27, -38, -43])
--43
-``` 
-
-- `Math.max(x1?, x2?, ...)`
-    - Returns the largest number among the parameters
-```
-> Math.max()
--Infinity
-
-> Math.max(7)
+> obj.foo
 7
 
-> Math.max(7, 10)
-10
+> JSON.stringify(obj)
+'{}'
+``` 
 
-> Math.max(7, 10, -333)
-10
+- cannot consider `functions`
+ ```angular2html
+> JSON.stringify(function () {})
+undefined
+```
 
-> Math.max.apply(null, [7, 10, -333])
-10
+- unsupported are ignored
+```angular2html
+> JSON.stringify({ foo: function () {} })
+'{}'
+```
+
+- Unsupported values in arrays are stringified as nulls
+```angular2html
+> JSON.stringify([ function () {} ])
+'[null]'
+```
+
+
+
+## JSON.parse(text, reviver?)
+- it parse data in text and return js value
+```angular2html
+> JSON.parse("'String'") // illegal quotes
+SyntaxError: Unexpected token ILLEGAL
+
+> JSON.parse('"String"')
+'String'
+
+> JSON.parse('123')
+123
+
+> JSON.parse('[1, 2, 3]')
+[ 1, 2, 3 ]
+
+> JSON.parse('{ "hello": 123, "world": 456 }')
+{ hello: 123, world: 456 }
 ```
 
