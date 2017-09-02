@@ -1,105 +1,211 @@
 # Speaking JS ES5
 
-## Part III
+## Part IV
 
-## New in ECMAScript 5
+## A Meta Code Style Guide
+
+- [Idiomatic.js](https://github.com/rwaldron/idiomatic.js/) 
+- [Popular Conventions on GitHub](http://sideeffect.kr/popularconvention/)
+- [JavaScript, the winning style](http://seravo.fi/2013/javascript-the-winning-style)
 
 
 
-## New Features
-- `strict mode`, forbids some feature, preforms checks, and throws exceptions
-- getter and setters 
+## Commonly Accepted Best Practices
+- Use strict mode.
+- Always use semicolons
+- Always use strict equality (===) and strict inequality (!==)
+- Either use only spaces or only tabs for indentation, but don’t mix them
+- Choose either double or single quotes. Single quotes are more common in JS
+- Avoid global variables 
+
+
+
+### Brace Styles
+
+
+
+#### 1TBS (One True Brace Style)
 ```angular2html
-var obj = { get foo() { return 'abc' } };
-obj.foo
-'abc'
+// One True Brace Style
+function foo(x, y, z) {
+    if (x) {
+        a();
+    } else {
+        b();
+        c();
+    }
+}
 ```
 
-## Syntactic Changes
 
 
-
-### Reserved words as property keys
-- using reserved as object properties
+### Prefer Literals to Constructors
 ```angular2html
-var obj = { new: 'abc' };
-obj.new
-'abc'
+var obj = new Object(); // no
+var obj = {}; // yes
+
+var arr = new Array(); // no
+var arr = []; // yes
+
+var regex = new RegExp('abc'); // avoid if possible
+var regex = /abc/; // yes
+
+var arr = new Array('a', 'b', 'c'); // never ever
+var arr = [ 'a', 'b', 'c' ]; // yes
+```
+
+
+#### Conditional operator
+- Don’t nest the conditional operator
+```angular2html
+// Don’t:
+return x === 0 ? 'red' : x === 1 ? 'green' : 'blue';
+
+// Better:
+if (x === 0) {
+    return 'red';
+} else if (x === 1) {
+    return 'green';
+} else {
+    return 'blue';
+}
+
+// Best:
+switch (x) {
+    case 0:
+        return 'red';
+    case 1:
+        return 'green';
+    default:
+        return 'blue';
+}
 ```
 
 
 
-### Legal trailing commas
-- Trailing commas in object literals and array literals are legal.
+#### Abbreviating if statements
+```angular2html
+foo && bar(); // no
+if (foo) bar(); // yes
+
+foo || bar(); // no
+if (!foo) bar(); // yes
+```
 
 
 
-### Multiline string literals
-- String literals can span multiple lines if you escape the end of the line via a backslash.
+#### Increment operator
+```angular2html
+// Unsure: what is happening?
+return ++foo;
+
+// Easy to understand
+++foo;
+return foo;
+```
 
 
 
-## New Functionality in the Standard Library
-- Getting and setting prototypes
-    - `Object.create()`
-    - `Object.getPrototypeOf()`
-    
-- Managing property attributes
-    - `Object.defineProperty()`
-    - `Object.defineProperties()`
-    - `Object.create()`
-    - `Object.getOwnPropertyDescriptor()`
-    
-- Listing properties
-    - `Object.keys()`
-    - `Object.getOwnPropertyNames()`
-    
-- Protecting objects
-    - `Object.preventExtensions()`
-    - `Object.isExtensible()`
-    - `Object.seal()`
-    - `Object.isSealed()`
-    - `Object.freeze()`
-    - `Object.isFrozen()`
-    
-- New Function method
-    - `Function.prototype.bind()`
-    
+#### Checking for undefined
+```angular2html
+if (x === void 0) x = 0; // not necessary in ES5
+if (x === undefined) x = 0; // preferable
+```
 
 
 
-### New Methods
-- String
-    - New method `String.prototype.trim()`
-    - Access characters via the bracket operator [...]
-
-- New `Array` methods
-    - `Array.isArray()`
-    - `Array.prototype.every()`
-    - `Array.prototype.filter()`
-    - `Array.prototype.forEach()`
-    - `Array.prototype.indexOf()`
-    - `Array.prototype.lastIndexOf()`
-    - `Array.prototype.map()`
-    - `Array.prototype.reduce()`
-    - `Array.prototype.some()`
-
-- New `Date` methods
-    - `Date.now()`
-    - `Date.prototype.toISOString()`
-    
+#### Converting a number to an integer
+```angular2html
+return x >> 0; // no
+return Math.round(x); // yes
+```
 
 
-### JSON
-- `JSON.parse()`
-- `JSON.stringify()`
-- Some built-in objects have special toJSON() methods
-    - `Boolean.prototype.toJSON()`
-    - `Number.prototype.toJSON()`
-    - `String.prototype.toJSON()`
-    - `Date.prototype.toJSON()`
+#### Default values
+```angular2html
+function f(x) {
+    x = x || 0;
+    ...
+}
+```
+
+
+#### Variables
+```angular2html
+// no
+var foo = 3,
+    bar = 2,
+    baz;
+
+// yes
+var foo = 3;
+var bar = 2;
+var baz;
+```
+
+- Avoid
+```angular2html
+// Don’t do this
+if (v) {
+    var x = v;
+} else {
+    var x = 10;
+}
+doSomethingWith(x);
+
+var x;
+if (v) {
+    x = v;
+} else {
+    x = 10;
+}
+doSomethingWith(x);
+```
 
 
 
-## Tips for Working with Legacy Browsers
-- (compatibility table)[http://kangax.github.io/es5-compat-table/]
+### Object Orientation
+- Always use constructors.
+- Always use new when creating an instance.
+
+
+
+#### Avoid closures for private data
+- should only be used to keep private data
+- otherwise we should use normal functions
+- closure make code more complex
+
+
+#### Write parenthesis if a constructor has no arguments
+```angular2html
+var foo = new Foo;  // no
+var foo = new Foo();  // yes
+```
+
+
+#### Miscellaneous
+- Coercing
+```angular2html
+> +'123'  // no
+123
+> Number('123')  // yes
+123
+
+> ''+true  // no
+'true'
+> String(true)  // yes
+'true'
+```
+
+
+#### Check for the existence of a property via `in` and `hasOwnProperty`
+```angular2html
+// All properties:
+if (obj.foo)  // no
+if (obj.foo !== undefined)  // no
+if ('foo' in obj) ... // yes
+
+// Own properties:
+if (obj.hasOwnProperty('foo')) ... // risky for arbitrary objects
+if (Object.prototype.hasOwnProperty.call(obj, 'foo')) ... // safe
+```
