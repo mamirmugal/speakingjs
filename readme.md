@@ -2,188 +2,51 @@
 
 ## Part IV
 
-## JSDoc: Generating API Documentation
-- Same as php with some variations
-```angular2html
-/** @namespace */
-var util = {
-    /**
-     * Repeat <tt>str</tt> several times.
-     * @param {string} str The string to repeat.
-     * @param {number} [times=1] How many times to repeat the string.
-     * @returns {string}
-     */
-    repeat: function(str, times) {
-        if (times === undefined || times < 1) {
-            times = 1;
-        }
-        return new Array(times+1).join(str);
-    }
-};
-```
+## Module Systems and Package Managers
+- JS has no built in support for modules
+- but there are libraries which support modules
 
 
 
-## The Basics of JSDoc
+## Module Systems
+- CommonJS Modules (CJS)
+    - it is drived from nodejs modules
+    - mainly used on server side
+    - designed for sync loading
 
-
-
-### Syntax
-```angular2html
-/**
- * Repeat <tt>str</tt> several times.
- * @param {string} str The string to repeat.
- * @param {number} [times=1] How many times to repeat the string.
- * @returns {string|number}
- */
-```
-
-
-
-## Basic Tags
-- `@fileOverview`
-    - it describes the whole file
-
-- `@author`
-- `@deprecated`
-- `@example`
-- `@see`
-    - Points to a related resource
-```angular2html
-/**
- * @see MyConstructor#myMethod
- * @see The <a href="http://example.com">Example Project</a>.
- */
-```
-- `@version`
-- `@since`
-
-
-
-## Documenting Functions and Methods
-- syntax to follow
-```angular2html
-@param {paramType} paramName description
-```
-
-- `@returns {returnType} description`
-- `@throws {exceptionType} description`
-
-
-
-## Documenting Variables, Parameters, and Instance Properties
-- `@type {typeName}`
-```angular2html
-/** @type {number} */
-var carCounter = 0;
-```
-- `@constant`
-```angular2html
-/** @constant */
-var FORD = 'Ford';
-```
-
-- `@property {propType} propKey description`
-```angular2html
-/**
- * @constructor
- * @property {string} name The name of the person.
- */
-function Person(name) {
-    this.name = name;
-}
-
-/**
- * @class
- */
-function Person(name) {
-    /**
-     * The name of the person.
-     * @type {string}
-     */
-    this.name = name;
-}
-```
-
-- `@default defaultValue`
-```angular2html
-/** @constructor */
-function Page(title) {
-    /**
-     * @default 'Untitled'
-     */
-     this.title = title || 'Untitled';
-}
-```
-
-
-
-## Documenting Classes
-- `@constructor`
-- `@class`
-- `@constructs`
-- `@memberof parentNamePath`
-
-
-
-### Defining a Class via an Object Literal
-```angular2html
-/**
- * A class for managing persons.
- * @class
- */
-var Person = makeClass(
-    /** @lends Person# */
-    {
-        say: function(message) {
-            return 'This person says: ' + message;
-        }
-    }
-);
-```
-
-
-
-### Defining a Class via an Object Literal with an @constructs Method
-```angular2html
- /** @lends Person# */
-    {
-        /**
-         * A class for managing persons.
-         * @constructs
-         */
-        initialize: function(name) {
-            this.name = name;
-        },
-        say: function(message) {
-            return this.name + ' says: ' + message;
-        }
-    }
-);
-```
-
-
-
-### Subclassing
-```angular2html
-/**
- * @constructor
- * @extends Person
- */
-function Programmer(name) {
-    Person.call(this, name);
-    ...
-}
-``` 
-
-
-
-### Other Useful Tags
-- Modularity
-    - `@module`
-    - `@exports`
-    - `@namespace`
+- Asynchronous Module Definition (AMD)
+    - designed with async loading
+    - mainly for browsers
     
-- Custom types
-    - @typedef
-    - @callback
+
+
+### Package Managers
+- `Bower` is a package manager for the Web that supports both AMD and CJS.
+- `Browserify` is a tool based on npm that compiles npm packages to something you can use in a browser.
+
+
+
+### Quick and Dirty Modules
+```angular2html
+var moduleName = function () {
+    function privateFunction () { ... }
+    function publicFunction(...) {
+        privateFunction();
+        otherModule.doSomething();  // implicit import
+    }
+    return { // exports
+        publicFunction: publicFunction
+    };
+}();
+
+
+<script src="modules/otherModule.js"></script>
+<script src="modules/moduleName.js"></script>
+<script type="text/javascript">
+    moduleName.publicFunction(...);
+</script>
+```
+
+- Reference
+- Basic structure of module pattern
+[Reveling Module Pattern](https://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript)
